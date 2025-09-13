@@ -1,0 +1,27 @@
+{
+    "python.defaultInterpreterPath": "./backend/venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "backend/venv": true,
+        "frontend/node_modules": true,
+        "frontend/build": true,
+        "downloads": true
+    },
+    "files.associations": {
+        "*.py": "python",
+        "*.js": "javascript",
+        "*.jsx": "javascriptreact"
+    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    }
+} 

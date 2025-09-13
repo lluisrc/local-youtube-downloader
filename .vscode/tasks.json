@@ -1,0 +1,92 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Setup venv",
+            "type": "shell",
+            "command": "${workspaceFolder}/setup-venv.bat",
+            "windows": {
+                "command": "${workspaceFolder}/setup-venv.bat"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/setup-venv.sh"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/setup-venv.sh"
+            },
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Start Backend",
+            "type": "shell",
+            "command": "${workspaceFolder}/backend/venv/Scripts/activate && python run.py",
+            "windows": {
+                "command": "${workspaceFolder}/backend/venv/Scripts/activate && python run.py"
+            },
+            "linux": {
+                "command": "source ${workspaceFolder}/backend/venv/bin/activate && python run.py"
+            },
+            "osx": {
+                "command": "source ${workspaceFolder}/backend/venv/bin/activate && python run.py"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/backend"
+            },
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Start Frontend",
+            "type": "shell",
+            "command": "npm start",
+            "options": {
+                "cwd": "${workspaceFolder}/frontend"
+            },
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Start All (venv)",
+            "dependsOrder": "parallel",
+            "dependsOn": [
+                "Start Backend",
+                "Start Frontend"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        }
+    ]
+}

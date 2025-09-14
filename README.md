@@ -9,8 +9,7 @@ Una aplicación web completa para descargar videos y audio de YouTube, construid
 - ✅ Extracción de audio en formato MP3
 - ✅ Información detallada del video (título, duración, vistas, formatos disponibles)
 - ✅ Progreso de descarga en tiempo real con WebSockets
-- ✅ Gestión de archivos descargados
-- ✅ Monitoreo del sistema (CPU, RAM, disco)
+- ✅ Descarga directa al navegador del usuario
 - ✅ API REST completa y documentada
 
 ### Frontend (React)
@@ -18,8 +17,7 @@ Una aplicación web completa para descargar videos y audio de YouTube, construid
 - ✅ Validación de URLs de YouTube
 - ✅ Selección de calidad y formato
 - ✅ Progreso de descarga en tiempo real
-- ✅ Gestión de archivos descargados
-- ✅ Información del sistema en tiempo real
+- ✅ Descarga automática de archivos procesados
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -206,16 +204,7 @@ npm start
    - Formato: Selección automática o formato específico
 4. **Descargar**: Hacer clic en "Descargar"
 5. **Monitorear progreso**: Ver el progreso en tiempo real
-
-### Gestión de Archivos
-- **Ver archivos**: Ir a la pestaña "Archivos"
-- **Descargar**: Hacer clic en el botón de descarga
-- **Eliminar**: Hacer clic en el botón de eliminar
-
-### Monitoreo del Sistema
-- **Ver estadísticas**: Ir a la pestaña "Sistema"
-- **Métricas**: CPU, RAM, disco, directorio de descargas
-- **Actualización automática**: Cada 10 segundos
+6. **Descarga automática**: El archivo se descarga automáticamente al navegador
 
 ## 📁 Estructura del Proyecto
 
@@ -236,7 +225,6 @@ local-youtube-downloader/
 │   │   └── index.html       # HTML principal
 │   ├── package.json         # Dependencias de Node.js
 │   └── tailwind.config.js   # Configuración de Tailwind
-├── downloads/               # Directorio de descargas (se crea automáticamente)
 ├── requirements.txt         # Dependencias de Python
 ├── setup-venv.bat           # Setup automático Windows con venv
 ├── setup-venv.sh            # Setup automático Linux/Mac con venv
@@ -254,7 +242,6 @@ local-youtube-downloader/
 ```env
 FASTAPI_HOST=0.0.0.0
 FASTAPI_PORT=8000
-DOWNLOAD_DIR=downloads
 CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
 
@@ -342,6 +329,11 @@ GET /download-progress/{download_id}
 ws://localhost:8000/ws/download-progress/{download_id}
 ```
 
+### Descargar Archivo
+```http
+GET /download-ready/{download_id}
+```
+
 ## 🔄 Actualizaciones
 
 ### Actualizar yt-dlp
@@ -393,4 +385,4 @@ Las contribuciones son bienvenidas. Por favor:
 
 ## 📝 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles. 
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.

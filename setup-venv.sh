@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 echo "============================================"
 echo " YouTube Downloader - Setup con venv"
@@ -6,20 +7,18 @@ echo "============================================"
 
 echo
 echo "Verificando Python..."
-if ! command -v python3 &> /dev/null; then
+if ! command -v python3 &>/dev/null; then
     echo "ERROR: Python3 no encontrado. Instala Python 3.8+ desde python.org"
     exit 1
 fi
-
 python3 --version
 
 echo
 echo "Verificando Node.js..."
-if ! command -v node &> /dev/null; then
+if ! command -v node &>/dev/null; then
     echo "ERROR: Node.js no encontrado. Instala Node.js desde nodejs.org"
     exit 1
 fi
-
 node --version
 
 echo
@@ -32,11 +31,12 @@ source backend/venv/bin/activate
 
 echo
 echo "Actualizando pip..."
-pip install --upgrade pip
+python -m pip install --upgrade pip
 
 echo
 echo "Instalando dependencias del backend..."
-pip install -r requirements.txt
+# 🔧 Usa la ruta correcta del requirements.txt dentro de /backend
+python -m pip install -r backend/requirements.txt
 
 echo
 echo "Desactivando entorno virtual..."
@@ -63,4 +63,4 @@ echo "URLs de acceso:"
 echo "  - Frontend: http://localhost:3000"
 echo "  - Backend API: http://localhost:8000"
 echo "  - Documentacion: http://localhost:8000/docs"
-echo 
+echo

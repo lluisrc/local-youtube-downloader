@@ -18,38 +18,17 @@ app = FastAPI(title="YouTube Downloader API", version="1.0.0")
 # Configuración de CORS para el frontend React
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=[
+        "http://localhost:3000", 
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Directorio de descargas
-DOWNLOAD_DIR = Path("downloads")
-DOWNLOAD_DIR.mkdir(exist_ok=True)
-
 # Almacenamiento temporal para el progreso de las descargas
 download_progress = {}
-
-# Función para limpiar archivos temporales
-async def cleanup_old_files():
-    """Limpiar archivos temporales más antiguos de 1 hora"""
-    current_time = time.time()
-    for file_path in DOWNLOAD_DIR.iterdir():
-        if file_path.is_file():
-            file_age = current_time - file_path.stat().st_mtime
-            if file_age > 3600:  # 1 hora
-                try:
-                    file_path.unlink()
-                    print(f"Archivo temporal eliminado: {file_path.name}")
-                except Exception as e:
-                    print(f"Error eliminando archivo {file_path.name}: {e}")
-
-# Tarea en background para limpiar archivos
-async def cleanup_task():
-    while True:
-        await asyncio.sleep(1800)  # Cada 30 minutos
-        await cleanup_old_files()
 
 class VideoInfo(BaseModel):
     id: str
@@ -156,39 +135,58 @@ async def download_video(request: DownloadRequest):
     try:
         download_id = str(uuid.uuid4())
         
-        print(f"Descarga iniciada - URL: {request.url}")
+        print(f"=== NUEVA DESCARGA ===")
+        print(f"URL: {request.url}")
         print(f"Calidad solicitada: {request.quality}")
         print(f"Formato ID: {request.format_id}")
         print(f"Solo audio: {request.audio_only}")
+        print(f"Tipo de descarga: {'AUDIO' if request.audio_only else 'VIDEO'}")
         
         # Configuración de yt-dlp
         ydl_opts = {
-            'outtmpl': str(DOWNLOAD_DIR / '%(title)s.%(ext)s'),
+            'outtmpl': '%(title)s.%(ext)s',
             'progress_hooks': [ProgressHook(download_id)],
         }
         
-        if request.audio_only:
-            ydl_opts['format'] = 'bestaudio/best'
+        # Priorizar format_id si está disponible (más preciso)
+        if request.format_id:
+            ydl_opts['format'] = request.format_id
+            print(f"Usando format_id específico: {request.format_id}")
+        elif request.audio_only:
+            # Para audio, usar la calidad seleccionada con fallback
+            if request.quality:
+                if request.quality == 'best':
+                    ydl_opts['format'] = 'bestaudio/best'
+                elif request.quality == 'worst':
+                    ydl_opts['format'] = 'worstaudio/worst'
+                else:
+                    # Para calidades específicas de audio (bitrate) con fallback
+                    try:
+                        quality_int = int(request.quality)
+                        ydl_opts['format'] = f'bestaudio[abr<={quality_int}]/bestaudio/best'
+                    except ValueError:
+                        ydl_opts['format'] = f'bestaudio[abr<={request.quality}]/bestaudio/best'
+            else:
+                ydl_opts['format'] = 'bestaudio/best'
+            
             ydl_opts['postprocessors'] = [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
             }]
-        elif request.format_id:
-            ydl_opts['format'] = request.format_id
         elif request.quality:
             if request.quality == 'best':
                 ydl_opts['format'] = 'best'
             elif request.quality == 'worst':
                 ydl_opts['format'] = 'worst'
             else:
-                # Para calidades específicas, usar el formato exacto
+                # Para calidades específicas de video con fallback
                 try:
                     quality_int = int(request.quality)
-                    ydl_opts['format'] = f'best[height<={quality_int}]'
+                    ydl_opts['format'] = f'best[height<={quality_int}]/best'
                 except ValueError:
-                    # Si no es un número, usar como está
-                    ydl_opts['format'] = f'best[height<={request.quality}]'
+                    # Si no es un número, usar como está con fallback
+                    ydl_opts['format'] = f'best[height<={request.quality}]/best'
         else:
             ydl_opts['format'] = 'best'
         
@@ -211,15 +209,43 @@ async def download_video(request: DownloadRequest):
         raise HTTPException(status_code=500, detail=f"Error starting download: {str(e)}")
 
 async def perform_download(download_id: str, url: str, ydl_opts: dict):
-    """Realizar descarga en background"""
+    """Realizar descarga en background con fallback"""
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
     except Exception as e:
-        download_progress[download_id] = {
-            'status': 'error',
-            'error': str(e)
-        }
+        error_msg = str(e)
+        print(f"Error en descarga: {error_msg}")
+        
+        # Si el error es de formato no disponible, intentar con fallback
+        if "Requested format is not available" in error_msg:
+            print("Formato no disponible, intentando con fallback...")
+            
+            # Crear opciones de fallback
+            fallback_opts = ydl_opts.copy()
+            
+            if ydl_opts.get('postprocessors'):  # Es audio
+                fallback_opts['format'] = 'bestaudio/best'
+            else:  # Es video
+                fallback_opts['format'] = 'best'
+            
+            print(f"Formato de fallback: {fallback_opts['format']}")
+            
+            try:
+                with yt_dlp.YoutubeDL(fallback_opts) as ydl_fallback:
+                    ydl_fallback.download([url])
+                print("Descarga exitosa con formato de fallback")
+            except Exception as fallback_error:
+                print(f"Error en fallback: {fallback_error}")
+                download_progress[download_id] = {
+                    'status': 'error',
+                    'error': f"Formato no disponible. Error: {str(fallback_error)}"
+                }
+        else:
+            download_progress[download_id] = {
+                'status': 'error',
+                'error': error_msg
+            }
 
 @app.get("/download-progress/{download_id}")
 async def get_download_progress(download_id: str):
@@ -247,32 +273,6 @@ async def websocket_download_progress(websocket: WebSocket, download_id: str):
     except WebSocketDisconnect:
         pass
 
-@app.get("/downloads")
-async def list_downloads():
-    """Listar archivos descargados"""
-    files = []
-    for file_path in DOWNLOAD_DIR.iterdir():
-        if file_path.is_file():
-            files.append({
-                'name': file_path.name,
-                'size': file_path.stat().st_size,
-                'created': file_path.stat().st_ctime
-            })
-    return files
-
-@app.get("/download-file/{filename}")
-async def download_file(filename: str):
-    """Descargar archivo"""
-    file_path = DOWNLOAD_DIR / filename
-    if not file_path.exists():
-        raise HTTPException(status_code=404, detail="File not found")
-    
-    return FileResponse(
-        path=str(file_path),
-        filename=filename,
-        media_type='application/octet-stream'
-    )
-
 @app.get("/download-ready/{download_id}")
 async def download_ready_file(download_id: str):
     """Descargar archivo cuando esté listo"""
@@ -288,9 +288,8 @@ async def download_ready_file(download_id: str):
         raise HTTPException(status_code=404, detail="Filename not available")
     
     print(f"Buscando archivo para descarga: {filename}")
-    print(f"Directorio de descargas: {DOWNLOAD_DIR}")
     
-    # Buscar el archivo en el directorio de descargas
+    # Buscar el archivo en el directorio actual
     file_path = None
     
     # Primero intentar con la ruta completa
@@ -298,18 +297,18 @@ async def download_ready_file(download_id: str):
         file_path = Path(filename)
         print(f"Archivo encontrado con ruta completa: {file_path}")
     else:
-        # Buscar por nombre en el directorio de descargas
+        # Buscar por nombre en el directorio actual
         filename_only = Path(filename).name
-        potential_path = DOWNLOAD_DIR / filename_only
+        potential_path = Path(filename_only)
         if potential_path.exists():
             file_path = potential_path
             print(f"Archivo encontrado por nombre: {file_path}")
         else:
-            # Buscar archivos recientes en el directorio (últimos 5 minutos)
+            # Buscar archivos recientes en el directorio actual (últimos 5 minutos)
             current_time = time.time()
             recent_files = []
             
-            for file_in_dir in DOWNLOAD_DIR.iterdir():
+            for file_in_dir in Path('.').iterdir():
                 if file_in_dir.is_file():
                     file_age = current_time - file_in_dir.stat().st_mtime
                     if file_age < 300:  # 5 minutos
@@ -324,7 +323,7 @@ async def download_ready_file(download_id: str):
             else:
                 # Buscar cualquier archivo que coincida con el patrón del nombre
                 base_name = filename_only.split('.')[0]
-                for file_in_dir in DOWNLOAD_DIR.iterdir():
+                for file_in_dir in Path('.').iterdir():
                     if file_in_dir.is_file() and base_name in file_in_dir.name:
                         file_path = file_in_dir
                         print(f"Archivo encontrado por patrón: {file_path}")
@@ -332,7 +331,7 @@ async def download_ready_file(download_id: str):
     
     if not file_path or not file_path.exists():
         # Listar todos los archivos para debug
-        all_files = [f.name for f in DOWNLOAD_DIR.iterdir() if f.is_file()]
+        all_files = [f.name for f in Path('.').iterdir() if f.is_file()]
         print(f"Archivos disponibles en directorio: {all_files}")
         raise HTTPException(status_code=404, detail=f"File not found. Available files: {all_files}")
     
@@ -353,50 +352,15 @@ async def download_ready_file(download_id: str):
         media_type=media_type
     )
 
-@app.delete("/download-file/{filename}")
-async def delete_file(filename: str):
-    """Eliminar archivo descargado"""
-    file_path = DOWNLOAD_DIR / filename
-    if not file_path.exists():
-        raise HTTPException(status_code=404, detail="File not found")
-    
-    file_path.unlink()
-    return {"message": "File deleted successfully"}
-
 @app.get("/system-info")
 async def get_system_info():
     """Obtener información del sistema"""
     return {
         'cpu_percent': psutil.cpu_percent(),
         'memory_percent': psutil.virtual_memory().percent,
-        'disk_usage': psutil.disk_usage('/').percent,
-        'download_dir_size': sum(f.stat().st_size for f in DOWNLOAD_DIR.glob('*') if f.is_file())
+        'disk_usage': psutil.disk_usage('/').percent
     }
-
-@app.get("/debug/downloads")
-async def debug_downloads():
-    """Endpoint de debug para ver el estado de las descargas"""
-    files_in_dir = []
-    for file_path in DOWNLOAD_DIR.iterdir():
-        if file_path.is_file():
-            files_in_dir.append({
-                'name': file_path.name,
-                'size': file_path.stat().st_size,
-                'path': str(file_path),
-                'modified': file_path.stat().st_mtime
-            })
-    
-    return {
-        'download_progress': download_progress,
-        'files_in_directory': files_in_dir,
-        'download_dir': str(DOWNLOAD_DIR)
-    }
-
-@app.on_event("startup")
-async def startup_event():
-    """Iniciar tarea de limpieza al arrancar el servidor"""
-    asyncio.create_task(cleanup_task())
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -56,7 +56,7 @@ const VideoInfo = ({ videoInfo, onDownloadStart }) => {
     if (downloadType === 'audio') {
       // Para audio, mostrar bitrates disponibles
       const audioQualities = filteredFormats
-        .filter(f => f.abr)
+        .filter(f => f.abr && f.abr > 0)
         .map(f => ({
           value: f.abr,
           label: `${f.abr} kbps`,
@@ -69,7 +69,7 @@ const VideoInfo = ({ videoInfo, onDownloadStart }) => {
     } else {
       // Para video, mostrar resoluciones disponibles
       const videoQualities = filteredFormats
-        .filter(f => f.height && f.height > 0)
+        .filter(f => f.height && f.height > 0 && f.vcodec && f.vcodec !== 'none')
         .reduce((acc, f) => {
           const height = f.height;
           if (!acc.find(q => q.height === height)) {
@@ -80,7 +80,8 @@ const VideoInfo = ({ videoInfo, onDownloadStart }) => {
               format_id: f.format_id,
               filesize: f.filesize,
               width: f.width,
-              fps: f.fps
+              fps: f.fps,
+              vcodec: f.vcodec
             });
           }
           return acc;
@@ -96,14 +97,33 @@ const VideoInfo = ({ videoInfo, onDownloadStart }) => {
     setDownloadProgress({ status: 'starting', percent: '0%' });
 
     try {
+      // Si se seleccionó una calidad específica, usar su format_id
+      let formatId = selectedFormat;
+      let qualityToSend = quality;
+
+      if (quality !== 'best' && quality !== 'worst' && quality !== 'custom') {
+        // Buscar el format_id de la calidad seleccionada
+        const selectedQuality = availableQualities.find(q => q.value === quality);
+        if (selectedQuality && selectedQuality.format_id) {
+          formatId = selectedQuality.format_id;
+          qualityToSend = undefined; // No enviar quality si tenemos format_id específico
+        }
+      }
+
       const downloadData = {
         url: `https://www.youtube.com/watch?v=${videoInfo.id}`,
         audio_only: downloadType === 'audio',
-        format_id: selectedFormat || undefined,
-        quality: quality !== 'custom' ? quality : undefined
+        format_id: formatId || undefined,
+        quality: qualityToSend !== 'custom' ? qualityToSend : undefined
       };
 
-      console.log('Iniciando descarga con datos:', downloadData);
+      console.log('=== INICIANDO DESCARGA ===');
+      console.log('Tipo de descarga:', downloadType);
+      console.log('Calidad seleccionada:', quality);
+      console.log('Formato seleccionado:', selectedFormat);
+      console.log('Format ID a usar:', formatId);
+      console.log('Quality a enviar:', qualityToSend);
+      console.log('Datos completos:', downloadData);
 
       const response = await axios.post(`${API_BASE_URL}/download`, downloadData);
       const downloadId = response.data.download_id;
@@ -121,7 +141,16 @@ const VideoInfo = ({ videoInfo, onDownloadStart }) => {
             setIsDownloading(false);
             setDownloadProgress(null);
           } else if (progress.status === 'error') {
-            alert('Error en la descarga: ' + (progress.error || 'Error desconocido'));
+            let errorMessage = 'Error en la descarga: ' + (progress.error || 'Error desconocido');
+
+            // Mensaje más específico para errores de formato
+            if (progress.error && progress.error.includes('Requested format is not available')) {
+              errorMessage = 'La calidad seleccionada no está disponible para este video. Se intentará con la mejor calidad disponible.';
+            } else if (progress.error && progress.error.includes('Formato no disponible')) {
+              errorMessage = 'No se pudo descargar el video. Es posible que el video esté restringido o no disponible.';
+            }
+
+            alert(errorMessage);
             setIsDownloading(false);
             setDownloadProgress(null);
           } else {
@@ -216,6 +245,9 @@ const VideoInfo = ({ videoInfo, onDownloadStart }) => {
 
   const filteredFormats = getFilteredFormats();
   const availableQualities = getAvailableQualities();
+
+  console.log('Calidades disponibles:', availableQualities);
+  console.log('Calidad actual seleccionada:', quality);
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">

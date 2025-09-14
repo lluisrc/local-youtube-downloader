@@ -14,7 +14,6 @@ sys.path.insert(0, str(backend_dir))
 
 if __name__ == "__main__":
     print("🚀 Iniciando YouTube Downloader Backend...")
-    print("📂 Directorio de descargas: downloads/")
     print("🌐 API disponible en: http://localhost:8000")
     print("📋 Documentación API: http://localhost:8000/docs")
     print("⚡ Presiona Ctrl+C para detener el servidor\n")

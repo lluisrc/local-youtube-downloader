@@ -19,53 +19,6 @@
 
 **YouTube Downloader Local** es una aplicación completamente **LOCAL** que se ejecuta en tu propia computadora (Windows o Linux). No necesitas internet más que para descargar los videos - todo el procesamiento ocurre en tu máquina, manteniendo tu privacidad y control total sobre tus descargas.
 
-### 🏠 ¿Por qué LOCAL?
-
-- **🔒 100% Privado**: Ningún dato sale de tu computadora
-- **🚫 Sin servidores externos**: No dependes de servicios en la nube
-- **⚡ Sin límites**: Descarga todos los videos que quieras
-- **💰 Completamente GRATIS**: Sin suscripciones ni pagos
-- **🔐 Tus datos son tuyos**: Los archivos se guardan donde TÚ decides
-
-### 🎯 ¿Para qué sirve?
-
-- **💾 Biblioteca personal**: Crea tu propia colección local de videos y música
-- **📱 Sin internet después**: Ve tus videos favoritos sin conexión
-- **🎵 MP3 de alta calidad**: Extrae audio para tu biblioteca musical local
-- **📚 Contenido educativo**: Guarda cursos, tutoriales y conferencias en tu PC
-- **🎬 Entretenimiento offline**: Películas, series y documentales disponibles siempre
-- **🔄 Respaldo personal**: Mantén copias locales de contenido importante
-
----
-
-## ✨ Características de la Aplicación Local
-
-### 🏠 Ejecución Local
-- **Servidor local**: Se ejecuta en `localhost` (tu computadora)
-- **Interfaz web local**: Acceso desde tu navegador en `http://localhost:3000`
-- **Procesamiento local**: Todo ocurre en tu máquina, no en la nube
-- **Almacenamiento local**: Archivos guardados directamente en tu disco duro
-
-### 🚀 Descarga Local Potente
-- **Múltiples calidades**: 4K, 1080p, 720p, 480p, 360p y más opciones
-- **Dos formatos principales**: 
-  - **MP4**: Videos completos con audio
-  - **MP3**: Solo audio de alta calidad
-- **Descarga directa**: Los archivos van directo a tu carpeta de descargas
-- **Sin límites de tiempo**: Descarga videos de cualquier duración
-
-### 🎨 Interfaz Web Local Moderna
-- **Acceso por navegador**: Interfaz web que se ejecuta localmente
-- **Diseño responsive**: Funciona en cualquier tamaño de ventana
-- **Progreso en tiempo real**: Ve el avance de descarga en vivo
-- **Validación inteligente**: Verifica automáticamente las URLs de YouTube
-
-### 🔧 Arquitectura Local Robusta
-- **Backend Python**: FastAPI ejecutándose en tu puerto 8000
-- **Frontend React**: Interfaz moderna en tu puerto 3000
-- **WebSockets locales**: Comunicación en tiempo real entre componentes
-- **API REST local**: Endpoints disponibles solo en tu máquina
-
 ---
 
 ## 📋 Requisitos del Sistema Local
@@ -153,6 +106,57 @@ chmod +x install-linux.sh
 - **URLs válidas**: Solo funciona con URLs públicas de YouTube
 
 ---
+
+### 🏠 ¿Por qué LOCAL?
+
+- **🔒 100% Privado**: Ningún dato sale de tu computadora
+- **🚫 Sin servidores externos**: No dependes de servicios en la nube
+- **⚡ Sin límites**: Descarga todos los videos que quieras
+- **💰 Completamente GRATIS**: Sin suscripciones ni pagos
+- **🔐 Tus datos son tuyos**: Los archivos se guardan donde TÚ decides
+
+### 🎯 ¿Para qué sirve?
+
+- **💾 Biblioteca personal**: Crea tu propia colección local de videos y música
+- **📱 Sin internet después**: Ve tus videos favoritos sin conexión
+- **🎵 MP3 de alta calidad**: Extrae audio para tu biblioteca musical local
+- **📚 Contenido educativo**: Guarda cursos, tutoriales y conferencias en tu PC
+- **🎬 Entretenimiento offline**: Películas, series y documentales disponibles siempre
+- **🔄 Respaldo personal**: Mantén copias locales de contenido importante
+
+---
+
+## ✨ Características de la Aplicación Local
+
+### 🏠 Ejecución Local
+- **Servidor local**: Se ejecuta en `localhost` (tu computadora)
+- **Interfaz web local**: Acceso desde tu navegador en `http://localhost:3000`
+- **Procesamiento local**: Todo ocurre en tu máquina, no en la nube
+- **Almacenamiento local**: Archivos guardados directamente en tu disco duro
+
+### 🚀 Descarga Local Potente
+- **Múltiples calidades**: 4K, 1080p, 720p, 480p, 360p y más opciones
+- **Dos formatos principales**: 
+  - **MP4**: Videos completos con audio
+  - **MP3**: Solo audio de alta calidad
+- **Descarga directa**: Los archivos van directo a tu carpeta de descargas
+- **Sin límites de tiempo**: Descarga videos de cualquier duración
+
+### 🎨 Interfaz Web Local Moderna
+- **Acceso por navegador**: Interfaz web que se ejecuta localmente
+- **Diseño responsive**: Funciona en cualquier tamaño de ventana
+- **Progreso en tiempo real**: Ve el avance de descarga en vivo
+- **Validación inteligente**: Verifica automáticamente las URLs de YouTube
+
+### 🔧 Arquitectura Local Robusta
+- **Backend Python**: FastAPI ejecutándose en tu puerto 8000
+- **Frontend React**: Interfaz moderna en tu puerto 3000
+- **WebSockets locales**: Comunicación en tiempo real entre componentes
+- **API REST local**: Endpoints disponibles solo en tu máquina
+
+---
+
+
 
 ## 📂 Estructura Local del Proyecto
 
@@ -246,9 +250,10 @@ chmod 755 downloads/
 Este proyecto está bajo la **Licencia MIT**. Consulta el archivo `LICENSE` para más detalles.
 
 ---
-
+<div align="center">
 **🏠 Una aplicación local, para tu computadora, sin comprometer tu privacidad**
 
 ⭐ **¡Dale una estrella si te resultó útil!** ⭐
 
 [⬆️ Volver arriba](#-youtube-downloader-local)
+</div>

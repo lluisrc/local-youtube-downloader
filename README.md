@@ -1,388 +1,259 @@
-# YouTube Downloader
+# 🏠 YouTube Downloader Local
 
-Una aplicación web completa para descargar videos y audio de YouTube, construida con Python (FastAPI) en el backend y React en el frontend.
+<div align="center">
 
-## 🚀 Características
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-blue.svg)](https://github.com/yourusername/youtube-downloader)
+[![Python](https://img.shields.io/badge/python-3.8+-brightgreen.svg)](https://python.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/status-Active-success.svg)]()
 
-### Backend (Python + FastAPI)
-- ✅ Descarga de videos en múltiples calidades (4K, 1080p, 720p, 480p, etc.)
-- ✅ Extracción de audio en formato MP3
-- ✅ Información detallada del video (título, duración, vistas, formatos disponibles)
-- ✅ Progreso de descarga en tiempo real con WebSockets
-- ✅ Descarga directa al navegador del usuario
-- ✅ API REST completa y documentada
+**📱 Aplicación LOCAL para Windows y Linux que descarga videos MP4 y audio MP3 de YouTube directo a tu computadora**
 
-### Frontend (React)
-- ✅ Interfaz moderna y responsive con Tailwind CSS
-- ✅ Validación de URLs de YouTube
-- ✅ Selección de calidad y formato
-- ✅ Progreso de descarga en tiempo real
-- ✅ Descarga automática de archivos procesados
+[Características](#-características) • [Instalación](#-instalación) • [Uso](#-cómo-usar) • [Documentación](#-documentación)
 
-## 🛠️ Tecnologías Utilizadas
+</div>
 
-### Backend
-- **FastAPI**: Framework web moderno y rápido
-- **yt-dlp**: Librería para descarga de videos de YouTube (fork actualizado de youtube-dl)
-- **WebSockets**: Para actualizaciones de progreso en tiempo real
-- **psutil**: Para monitoreo del sistema
-- **Uvicorn**: Servidor ASGI
+---
 
-### Frontend
-- **React**: Librería de JavaScript para interfaces de usuario
-- **Tailwind CSS**: Framework CSS utilitario
-- **Axios**: Cliente HTTP para llamadas a la API
-- **Lucide React**: Iconos modernos
+## 📖 ¿Qué es YouTube Downloader Local?
 
-## 📦 Instalación
+**YouTube Downloader Local** es una aplicación completamente **LOCAL** que se ejecuta en tu propia computadora (Windows o Linux). No necesitas internet más que para descargar los videos - todo el procesamiento ocurre en tu máquina, manteniendo tu privacidad y control total sobre tus descargas.
 
-### Prerequisitos
-- Python 3.8+
-- Node.js 14+
-- npm o yarn
-- FFmpeg (para conversión de audio)
+---
 
-### Instalación de FFmpeg
+## 📋 Requisitos del Sistema Local
 
-**Windows:**
+### Para Windows
+- **Windows 10/11** (64-bit recomendado)
+- **Python 3.8+** instalado localmente
+- **Node.js 14+** para la interfaz web
+- **4 GB RAM** mínimo (8 GB recomendado)
+- **2 GB espacio libre** para la aplicación
+- **FFmpeg** (se instala automáticamente)
+
+### Para Linux
+- **Ubuntu 18.04+**, **Debian 10+**, **Fedora 30+**, o **Arch Linux**
+- **Python 3.8+** (generalmente preinstalado)
+- **Node.js 14+** 
+- **4 GB RAM** mínimo (8 GB recomendado)
+- **2 GB espacio libre** para la aplicación
+- **FFmpeg** (se instala con el script de instalación)
+
+---
+
+## 🚀 Instalación Local
+
+### 🪟 Instalación para Windows
+
+#### Opción 1: Instalación Automática (Recomendada)
 ```bash
-# Usando chocolatey
+# 1. Descargar e instalar Python desde python.org
+# 2. Descargar e instalar Node.js desde nodejs.org
+# 3. Clonar o descargar este proyecto
+# 4. Abrir PowerShell como administrador en la carpeta del proyecto
+
+# 5. Ejecutar instalador automático
+.\setup-venv.bat
+
+# 6. Iniciar la Aplicación Local
+.\start-venv.bat
+```
+### 🐧 Instalación para Linux
+
+#### Opción 1: Instalación Automática (Recomendada)
+```bash
+# 1. Clonar o descargar este proyecto
+# 2. Dar permisos de ejecución al instalador
+chmod +x install-linux.sh
+
+# 3. Ejecutar instalador automático
+.\setup-venv.sh
+
+# 4. Iniciar la Aplicación Local
+.\start-venv.sh
+```
+
+---
+
+
+### 🌐 Acceder a la Aplicación
+1. **Abrir navegador web** (Chrome, Firefox, Edge, etc.)
+2. **Ir a**: `http://localhost:3000`
+3. **¡Listo!** Ya puedes usar tu YouTube Downloader local
+
+### 📥 Descargar Videos Localmente
+
+#### Paso a Paso:
+1. **Copiar URL**: Ve a YouTube y copia la URL del video que quieres
+2. **Pegar en la app**: Pega la URL en el campo de texto
+3. **Obtener información**: Haz clic en "Obtener Info" para ver opciones
+4. **Elegir formato**:
+   - **Video MP4**: Para video completo con audio
+   - **Audio MP3**: Solo para música o audio
+5. **Seleccionar calidad**:
+   - **4K (2160p)**: Máxima calidad (archivos grandes)
+   - **1080p Full HD**: Alta calidad equilibrada
+   - **720p HD**: Buena calidad, archivos medianos
+   - **480p**: Calidad estándar, archivos pequeños
+6. **Iniciar descarga**: Haz clic en "Descargar"
+7. **Ver progreso**: Observa la barra de progreso en tiempo real
+8. **Archivo listo**: Se descarga automáticamente a tu carpeta de Descargas
+
+#### 💡 Consejos de Uso:
+- **Videos largos**: Pueden tardar más en procesar
+- **Calidad alta**: Requiere más espacio en disco
+- **Múltiples descargas**: Puedes hacer varias a la vez
+- **URLs válidas**: Solo funciona con URLs públicas de YouTube
+
+---
+
+### 🏠 ¿Por qué LOCAL?
+
+- **🔒 100% Privado**: Ningún dato sale de tu computadora
+- **🚫 Sin servidores externos**: No dependes de servicios en la nube
+- **⚡ Sin límites**: Descarga todos los videos que quieras
+- **💰 Completamente GRATIS**: Sin suscripciones ni pagos
+- **🔐 Tus datos son tuyos**: Los archivos se guardan donde TÚ decides
+
+### 🎯 ¿Para qué sirve?
+
+- **💾 Biblioteca personal**: Crea tu propia colección local de videos y música
+- **📱 Sin internet después**: Ve tus videos favoritos sin conexión
+- **🎵 MP3 de alta calidad**: Extrae audio para tu biblioteca musical local
+- **📚 Contenido educativo**: Guarda cursos, tutoriales y conferencias en tu PC
+- **🎬 Entretenimiento offline**: Películas, series y documentales disponibles siempre
+- **🔄 Respaldo personal**: Mantén copias locales de contenido importante
+
+---
+
+## ✨ Características de la Aplicación Local
+
+### 🏠 Ejecución Local
+- **Servidor local**: Se ejecuta en `localhost` (tu computadora)
+- **Interfaz web local**: Acceso desde tu navegador en `http://localhost:3000`
+- **Procesamiento local**: Todo ocurre en tu máquina, no en la nube
+- **Almacenamiento local**: Archivos guardados directamente en tu disco duro
+
+### 🚀 Descarga Local Potente
+- **Múltiples calidades**: 4K, 1080p, 720p, 480p, 360p y más opciones
+- **Dos formatos principales**: 
+  - **MP4**: Videos completos con audio
+  - **MP3**: Solo audio de alta calidad
+- **Descarga directa**: Los archivos van directo a tu carpeta de descargas
+- **Sin límites de tiempo**: Descarga videos de cualquier duración
+
+### 🎨 Interfaz Web Local Moderna
+- **Acceso por navegador**: Interfaz web que se ejecuta localmente
+- **Diseño responsive**: Funciona en cualquier tamaño de ventana
+- **Progreso en tiempo real**: Ve el avance de descarga en vivo
+- **Validación inteligente**: Verifica automáticamente las URLs de YouTube
+
+### 🔧 Arquitectura Local Robusta
+- **Backend Python**: FastAPI ejecutándose en tu puerto 8000
+- **Frontend React**: Interfaz moderna en tu puerto 3000
+- **WebSockets locales**: Comunicación en tiempo real entre componentes
+- **API REST local**: Endpoints disponibles solo en tu máquina
+
+---
+
+
+
+## 📂 Estructura Local del Proyecto
+
+```
+youtube-downloader-local/
+├── 📁 backend/                 # Servidor Python local
+│   ├── 📁 venv/               # Entorno virtual (creado automáticamente)
+│   ├── 📄 main.py             # Aplicación FastAPI principal
+│   ├── 📄 run.py              # Iniciador del servidor local
+│   └── 📄 requirements.txt        # Dependencias Python
+├── 📁 frontend/               # Interfaz web React local
+│   ├── 📁 src/               # Código fuente React
+│   ├── 📁 public/            # Archivos públicos web
+│   ├── 📄 package.json       # Dependencias Node.js
+│   └── 📄 tailwind.config.js # Configuración de estilos
+├── 📄 setup-venv.bat         # Instalador automático Windows
+├── 📄 setup-venv.sh          # Instalador automático Linux
+├── 📄 start-venv.bat         # Iniciador Windows
+├── 📄 start-venv.sh          # Iniciador Linux
+└── 📄 README.md              # Esta documentación
+```
+
+---
+
+### 🔧 Solución de Problemas Locales
+
+#### ❌ "No se puede conectar al servidor"
+- **Verificar** que el backend esté ejecutándose en puerto 8000
+- **Comprobar** que no haya otras aplicaciones usando los puertos
+- **Reiniciar** ambos servidores (backend y frontend)
+
+#### ❌ "FFmpeg not found"
+```bash
+# Windows (instalar Chocolatey primero):
 choco install ffmpeg
 
-# O descargar desde https://ffmpeg.org/download.html
+# Linux:
+sudo apt install ffmpeg  # Ubuntu/Debian
+sudo dnf install ffmpeg  # Fedora
+sudo pacman -S ffmpeg    # Arch
 ```
 
-**macOS:**
+#### ❌ "Error de permisos"
+- **Windows**: Ejecutar como administrador
+- **Linux**: Verificar permisos de la carpeta de descargas
 ```bash
-brew install ffmpeg
+chmod 755 downloads/
 ```
 
-**Linux (Ubuntu/Debian):**
-```bash
-sudo apt update
-sudo apt install ffmpeg
-```
+#### ❌ "Puerto en uso"
+- **Cambiar puerto** en backend/.env
+- **O cerrar** aplicaciones que usen puertos 3000 y 8000
 
-### 🐍 Método Recomendado: Usando venv (Entorno Virtual)
+---
 
-**Opción 1: Setup Automático**
+## 🛡️ Privacidad y Seguridad Local
 
-**Windows:**
-```bash
-# Ejecutar setup inicial (solo una vez)
-setup-venv.bat
+### 🔒 Ventajas de Privacidad:
+- **Sin telemetría**: No se envían datos a servidores externos
+- **Sin registro**: No se guardan logs de tus descargas
+- **Sin cuentas**: No necesitas registrarte en ningún lado
+- **Control total**: Tú decides qué, cuándo y dónde descargar
 
-# Ejecutar proyecto
-start-venv.bat
-```
+### 🛡️ Seguridad Local:
+- **Solo localhost**: La aplicación solo es accesible desde tu PC
+- **Sin exposición web**: No está disponible en internet
+- **Archivos locales**: Todo se guarda en tu disco duro
+- **Código abierto**: Puedes revisar todo el código fuente
 
-**Linux/Mac:**
-```bash
-# Hacer ejecutables los scripts
-chmod +x setup-venv.sh start-venv.sh
+---
 
-# Ejecutar setup inicial (solo una vez)
-./setup-venv.sh
+## ⚠️ Uso Responsable y Legal
 
-# Ejecutar proyecto
-./start-venv.sh
-```
+### 📋 Términos de Uso:
+- **Solo para uso personal**: No redistribuyas contenido descargado
+- **Respeta derechos de autor**: No descargues contenido protegido sin permiso
+- **Uso educativo**: Ideal para contenido educativo y de dominio público
+- **YouTube ToS**: Respeta los términos de servicio de YouTube
 
-**Opción 2: Setup Manual**
+### ✅ Usos Apropiados:
+- Videos de dominio público
+- Tu propio contenido subido a YouTube  
+- Material educativo con licencia libre
+- Videos con licencia Creative Commons
+- Respaldos personales de contenido que ya posees
 
-1. **Crear entorno virtual:**
-```bash
-# Windows
-python -m venv backend\venv
+---
 
-# Linux/Mac
-python3 -m venv backend/venv
-```
+## 📄 Licencia
 
-2. **Activar entorno virtual:**
-```bash
-# Windows
-backend\venv\Scripts\activate
+Este proyecto está bajo la **Licencia MIT**. Consulta el archivo `LICENSE` para más detalles.
 
-# Linux/Mac
-source backend/venv/bin/activate
-```
+---
+<div align="center">
+**🏠 Una aplicación local, para tu computadora, sin comprometer tu privacidad**
 
-3. **Instalar dependencias del backend:**
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
+⭐ **¡Dale una estrella si te resultó útil!** ⭐
 
-4. **Instalar dependencias del frontend:**
-```bash
-cd frontend
-npm install
-cd ..
-```
-
-5. **Ejecutar servidores:**
-```bash
-# Terminal 1 - Backend (con venv activado)
-cd backend
-source venv/bin/activate  # Linux/Mac
-# o backend\venv\Scripts\activate  # Windows
-python run.py
-
-# Terminal 2 - Frontend
-cd frontend
-npm start
-```
-
-### 🔧 Método Alternativo: Sin venv
-
-**Solo si no puedes usar venv:**
-
-1. **Instalar dependencias de Python:**
-```bash
-pip install -r requirements.txt
-```
-
-2. **Ejecutar el servidor backend:**
-```bash
-cd backend
-python run.py
-```
-
-3. **Instalar dependencias de Node.js:**
-```bash
-cd frontend
-npm install
-```
-
-4. **Ejecutar la aplicación React:**
-```bash
-npm start
-```
-
-### 🌐 Acceso a la Aplicación
-
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000  
-- **Documentación API**: http://localhost:8000/docs
-
-## 🐍 ¿Por qué usar venv?
-
-### ✅ Ventajas de usar venv:
-- **Aislamiento**: Las dependencias no afectan otros proyectos Python
-- **Versiones específicas**: Cada proyecto puede usar versiones diferentes de las mismas librerías
-- **Limpieza**: Fácil de eliminar y recrear el entorno
-- **Reproducibilidad**: Garantiza que el proyecto funcione igual en diferentes máquinas
-- **Seguridad**: Evita conflictos entre diferentes versiones de paquetes
-
-### ⚠️ Sin venv:
-- Las dependencias se instalan globalmente en el sistema
-- Posibles conflictos con otros proyectos Python
-- Más difícil de gestionar dependencias específicas
-- Riesgo de romper otros proyectos al actualizar librerías
-
-### 🚀 Métodos de Inicio Disponibles:
-
-| Método | Descripción | Archivos |
-|--------|-------------|----------|
-| **venv (Recomendado)** | Entorno virtual aislado | `setup-venv.bat/sh`, `start-venv.bat/sh` |
-| **Sin venv** | Instalación global | `start.bat/sh` |
-| **Manual** | Control total | Comandos individuales |
-
-## 🚀 Uso
-
-### Acceso a la Aplicación
-1. Abrir navegador en `http://localhost:3000`
-2. El backend debe estar ejecutándose en `http://localhost:8000`
-
-### Descargar Videos
-1. **Pegar URL**: Copiar la URL del video de YouTube
-2. **Obtener información**: Hacer clic en "Obtener Información"
-3. **Seleccionar opciones**:
-   - Tipo: Video completo o solo audio
-   - Calidad: Mejor calidad, menor tamaño, o resolución específica
-   - Formato: Selección automática o formato específico
-4. **Descargar**: Hacer clic en "Descargar"
-5. **Monitorear progreso**: Ver el progreso en tiempo real
-6. **Descarga automática**: El archivo se descarga automáticamente al navegador
-
-## 📁 Estructura del Proyecto
-
-```
-local-youtube-downloader/
-├── backend/
-│   ├── venv/                # Entorno virtual de Python (no se sube a git)
-│   ├── main.py              # Aplicación FastAPI principal
-│   ├── run.py               # Script de inicio del servidor
-│   └── .env                 # Variables de entorno
-├── frontend/
-│   ├── src/
-│   │   ├── components/      # Componentes React
-│   │   ├── App.js           # Componente principal
-│   │   ├── index.js         # Punto de entrada
-│   │   └── index.css        # Estilos con Tailwind
-│   ├── public/
-│   │   └── index.html       # HTML principal
-│   ├── package.json         # Dependencias de Node.js
-│   └── tailwind.config.js   # Configuración de Tailwind
-├── requirements.txt         # Dependencias de Python
-├── setup-venv.bat           # Setup automático Windows con venv
-├── setup-venv.sh            # Setup automático Linux/Mac con venv
-├── start-venv.bat           # Inicio automático Windows con venv
-├── start-venv.sh            # Inicio automático Linux/Mac con venv
-├── start.bat                # Inicio automático Windows (sin venv)
-├── start.sh                 # Inicio automático Linux/Mac (sin venv)
-├── README.md               # Este archivo
-└── INICIO-RAPIDO.md        # Guía de inicio rápido
-```
-
-## 🔧 Configuración Avanzada
-
-### Variables de Entorno (backend/.env)
-```env
-FASTAPI_HOST=0.0.0.0
-FASTAPI_PORT=8000
-CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
-```
-
-### Gestión del Entorno Virtual
-
-**Comandos útiles con venv:**
-```bash
-# Activar entorno virtual
-# Windows: backend\venv\Scripts\activate
-# Linux/Mac: source backend/venv/bin/activate
-
-# Instalar nueva dependencia
-pip install nueva-libreria
-pip freeze > requirements.txt
-
-# Ver dependencias instaladas
-pip list
-
-# Actualizar dependencias
-pip install --upgrade -r requirements.txt
-
-# Desactivar entorno virtual
-deactivate
-```
-
-### Personalización de yt-dlp
-El archivo `backend/main.py` permite personalizar:
-- Formatos de salida
-- Calidades disponibles
-- Opciones de post-procesamiento
-- Configuración de FFmpeg
-
-## 🐛 Solución de Problemas
-
-### Error: "FFmpeg not found"
-- Instalar FFmpeg siguiendo las instrucciones anteriores
-- Verificar que esté en el PATH del sistema
-
-### Error: "CORS policy"
-- Verificar que ambos servidores estén ejecutándose
-- Comprobar las URLs en la configuración de CORS
-
-### Error: "Video unavailable"
-- Verificar que la URL sea válida
-- Algunos videos pueden tener restricciones geográficas
-- Videos privados no son accesibles
-
-### Descarga lenta
-- Verificar conexión a internet
-- Monitorear uso de CPU y memoria
-- Evitar descargas simultáneas de videos grandes
-
-## 📋 API Endpoints
-
-### Información del Video
-```http
-POST /video-info
-Content-Type: application/json
-
-{
-  "url": "https://www.youtube.com/watch?v=VIDEO_ID"
-}
-```
-
-### Iniciar Descarga
-```http
-POST /download
-Content-Type: application/json
-
-{
-  "url": "https://www.youtube.com/watch?v=VIDEO_ID",
-  "audio_only": false,
-  "quality": "best",
-  "format_id": "optional"
-}
-```
-
-### Progreso de Descarga
-```http
-GET /download-progress/{download_id}
-```
-
-### WebSocket para Progreso
-```
-ws://localhost:8000/ws/download-progress/{download_id}
-```
-
-### Descargar Archivo
-```http
-GET /download-ready/{download_id}
-```
-
-## 🔄 Actualizaciones
-
-### Actualizar yt-dlp
-```bash
-# Con venv activado
-source backend/venv/bin/activate  # Linux/Mac
-# o backend\venv\Scripts\activate  # Windows
-
-pip install --upgrade yt-dlp
-pip freeze > requirements.txt
-```
-
-### Actualizar dependencias
-```bash
-# Backend (con venv activado)
-source backend/venv/bin/activate  # Linux/Mac
-# o backend\venv\Scripts\activate  # Windows
-
-pip install --upgrade -r requirements.txt
-
-# Frontend
-cd frontend
-npm update
-```
-
-### Recrear entorno virtual
-```bash
-# Si hay problemas con el entorno virtual
-rm -rf backend/venv  # Linux/Mac
-# o rmdir /s backend\venv  # Windows
-
-# Ejecutar setup nuevamente
-./setup-venv.sh  # Linux/Mac
-# o setup-venv.bat  # Windows
-```
-
-## ⚠️ Aviso Legal
-
-Esta aplicación es solo para uso personal y educativo. Respeta los términos de servicio de YouTube y las leyes de derechos de autor de tu jurisdicción. No uses esta herramienta para descargar contenido protegido por derechos de autor sin el permiso adecuado.
-
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas. Por favor:
-1. Fork el proyecto
-2. Crear una rama para tu característica
-3. Commit tus cambios
-4. Push a la rama
-5. Abrir un Pull Request
-
-## 📝 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+[⬆️ Volver arriba](#-youtube-downloader-local)
+</div>
